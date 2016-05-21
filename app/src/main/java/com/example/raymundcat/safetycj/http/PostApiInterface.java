@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Observable;
 
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -50,7 +51,8 @@ public interface PostApiInterface {
             @Part("lat") double lat,
             @Part("lng") double lng,
             @Part("timestamp") long timestamp,
-            @Part("media") List<ResponseBody> media
+            @Part("media\"; filename=\"thumbnailImageFile.jpg\"") RequestBody media
+//            @Part("media") RequestBody media
     );
 //    @Headers({ "Content-Type: multipart/form-data"})
 //    Call<ResponseBody> createUser(@Body User user);
