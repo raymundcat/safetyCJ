@@ -3,6 +3,10 @@ package com.example.raymundcat.safetycj.http;
 import com.example.raymundcat.safetycj.models.EventLocations;
 import com.example.raymundcat.safetycj.models.User;
 
+import java.util.List;
+import java.util.Observable;
+
+import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -35,6 +39,18 @@ public interface PostApiInterface {
             @Part("facebookId") String facebookId,
             @Part("birthday") String birthday,
             @Part("email") String email
+    );
+
+    @Multipart
+    @POST ("/api/reports")
+    Call<ResponseBody> createReport(
+            @Part("type") String type,
+            @Part("facebookId") String facebookId,
+            @Part("text") String description,
+            @Part("lat") double lat,
+            @Part("lng") double lng,
+            @Part("timestamp") long timestamp,
+            @Part("media") List<ResponseBody> media
     );
 //    @Headers({ "Content-Type: multipart/form-data"})
 //    Call<ResponseBody> createUser(@Body User user);
