@@ -1,6 +1,9 @@
 package com.example.raymundcat.safetycj.activities;
 
 import android.app.Activity;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.UiThread;
 import android.util.Log;
@@ -53,9 +56,7 @@ import retrofit2.http.Path;
  * Created by Raymund on 21/05/2016.
  */
 @EActivity(R.layout.activity_map)
-public class MapActivity extends Activity{
-    static final LatLng HAMBURG = new LatLng(53.558, 9.927);
-    static final LatLng KIEL = new LatLng(53.551, 9.993);
+public class MapActivity extends Activity implements LocationListener {
     private GoogleMap map;
     List<LatLng> list = new ArrayList<LatLng>();
     ArrayList<EventLocations.EventLocation> origCopyLocations = new ArrayList<EventLocations.EventLocation>();
@@ -89,14 +90,24 @@ public class MapActivity extends Activity{
     @ViewById(R.id.map_button_environment)
     Button buttonEnvironment;
 
+    protected LocationManager locationManager;
+    Double latitude,longitude;
+
     @AfterViews
     void afterViews(){
         map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
                 .getMap();
 
-        float zoomLevel = (float) 16.8; //This goes up to 21
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(14.700127,121.033723), zoomLevel));
-        addHeatMap();
+//        float zoomLevel = (float) 16.8; //This goes up to 21
+//        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(14.700127,121.033723), zoomLevel));
+//        addHeatMap();
+
+        locationManager = (LocationManager) getSystemService(this.LOCATION_SERVICE);
+        try{
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+        }catch (Exception e){
+
+        }
     }
 
     @Click(R.id.map_toolbar_back)
@@ -389,5 +400,38 @@ public class MapActivity extends Activity{
             // Add a tile overlay to the map, using the heat map tile provider.
             mOverlay = map.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
         }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        Log.i("","wot " + location.getLatitude());
+
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
+
+        float zoomLevel = (float) 16.8; //This goes up to 21
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude), zoomLevel));
+        addHeatMap();
+
+        try{
+            locationManager.removeUpdates(this);
+        }catch (Exception e){
+
+        }
+    }
+
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String s) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+
     }
 }
