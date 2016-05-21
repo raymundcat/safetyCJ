@@ -1,10 +1,16 @@
 package com.example.raymundcat.safetycj;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -40,7 +46,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 @EActivity(R.layout.activity_main)
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements LocationListener {
 
     private static final int SELECT_PICTURE = 1;
     private static final int CAMERA_REQUEST = 2;
@@ -69,11 +75,14 @@ public class MainActivity extends Activity {
     @ViewById(R.id.report_text)
     EditText reportText;
 
+    protected LocationManager locationManager;
+    Double latitude,longitude;
+
     @Click(R.id.home_button_catcall)
-    void didPressButtonCatcall(){
-        if (buttonCatcall.isSelected()){
+    void didPressButtonCatcall() {
+        if (buttonCatcall.isSelected()) {
             buttonCatcall.setSelected(false);
-        }else {
+        } else {
             incidentTitle.setText("Incident: Catcall");
             buttonCatcall.setSelected(true);
             buttonStalking.setSelected(false);
@@ -82,10 +91,10 @@ public class MainActivity extends Activity {
     }
 
     @Click(R.id.home_button_stalking)
-    void didPreddButtonStalking(){
-        if (buttonStalking.isSelected()){
+    void didPreddButtonStalking() {
+        if (buttonStalking.isSelected()) {
             buttonStalking.setSelected(false);
-        }else {
+        } else {
             incidentTitle.setText("Incident: Stalking");
             buttonCatcall.setSelected(false);
             buttonStalking.setSelected(true);
@@ -94,10 +103,10 @@ public class MainActivity extends Activity {
     }
 
     @Click(R.id.home_button_environment)
-    void didPressButtonEnvironment(){
-        if (buttonEnvironment.isSelected()){
+    void didPressButtonEnvironment() {
+        if (buttonEnvironment.isSelected()) {
             buttonEnvironment.setSelected(false);
-        }else {
+        } else {
             incidentTitle.setText("Incident: Environment Report");
             buttonCatcall.setSelected(false);
             buttonStalking.setSelected(false);
@@ -106,13 +115,13 @@ public class MainActivity extends Activity {
     }
 
     @Click(R.id.home_button_camera)
-    void didPressCamera(){
+    void didPressCamera() {
         Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(cameraIntent, CAMERA_REQUEST);
     }
 
     @Click(R.id.home_button_gallery)
-    void didPressGallery(){
+    void didPressGallery() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -140,14 +149,11 @@ public class MainActivity extends Activity {
 
         if (buttonCatcall.isSelected()) {
             selectedReportType = Constants.ReportType.CATCALL;
-        }
-        else if (buttonStalking.isSelected()) {
+        } else if (buttonStalking.isSelected()) {
             selectedReportType = Constants.ReportType.STALKING;
-        }
-        else if (buttonEnvironment.isSelected()) {
+        } else if (buttonEnvironment.isSelected()) {
             selectedReportType = Constants.ReportType.ENVIRONMENT;
-        }
-        else {
+        } else {
             selectedReportType = Constants.ReportType.ENVIRONMENT;
             // TODO: Handle for no selected type
         }
@@ -192,15 +198,15 @@ public class MainActivity extends Activity {
      */
     public String getPath(Uri uri) {
         // just some safety built in
-        if( uri == null ) {
+        if (uri == null) {
             // TODO perform some logging or show user feedback
             return null;
         }
         // try to retrieve the image from the media store first
         // this will only work for images selected from gallery
-        String[] projection = { MediaStore.Images.Media.DATA };
+        String[] projection = {MediaStore.Images.Media.DATA};
         Cursor cursor = managedQuery(uri, projection, null, null, null);
-        if( cursor != null ){
+        if (cursor != null) {
             int column_index = cursor
                     .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             cursor.moveToFirst();
@@ -216,7 +222,40 @@ public class MainActivity extends Activity {
     }
 
     @AfterViews
-    void afterViews(){
+    void afterViews() {
+        locationManager = (LocationManager) getSystemService(this.LOCATION_SERVICE);
+        try{
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+        }catch (Exception e){
+
+        }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        Log.i("","wot " + location.getLatitude());
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
+        try{
+            locationManager.removeUpdates(this);
+        }catch (Exception e){
+
+        }
+    }
+
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String s) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+
     }
 
 //    @Click(R.id.testbutton)
