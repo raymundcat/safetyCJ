@@ -59,7 +59,7 @@ public class MapActivity extends Activity{
         map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
                 .getMap();
 
-        float zoomLevel = (float) 17.0; //This goes up to 21
+        float zoomLevel = (float) 18.0; //This goes up to 21
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(14.700127,121.033723), zoomLevel));
         addHeatMap();
     }
@@ -76,23 +76,6 @@ public class MapActivity extends Activity{
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         PostApiInterface apiInterface = retrofit.create(PostApiInterface.class);
-//        Call<ResponseBody> getLocationsCall = apiInterface.getLocations();
-//        getLocationsCall.enqueue(new Callback<ResponseBody>() {
-//            @Override
-//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-//                try {
-//                    Log.i("","Response lol" + response.body().string());
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ResponseBody> call, Throwable t) {
-//
-//            }
-//        });
 
         Call<EventLocations> getLocationsCall = apiInterface.getLocations();
         getLocationsCall.enqueue(new Callback<EventLocations>() {
@@ -107,9 +90,6 @@ public class MapActivity extends Activity{
                     list.add(latlng);
 //                    Log.i("","new latlng " + latlng.latitude + " " + latlng.longitude);
                 }
-
-                // Get the data: latitude/longitude positions of police stations.
-
 
                 // Create a heat map tile provider, passing it the latlngs of the police stations.
                 HeatmapTileProvider mProvider = new HeatmapTileProvider.Builder()
