@@ -6,7 +6,6 @@ import android.support.annotation.UiThread;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.raymundcat.safetycj.InputStreamCallback;
 import com.example.raymundcat.safetycj.R;
 import com.example.raymundcat.safetycj.http.APIConstants;
 import com.example.raymundcat.safetycj.http.PostApiInterface;
