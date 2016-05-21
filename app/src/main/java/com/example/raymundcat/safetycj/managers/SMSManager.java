@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.telephony.SmsManager;
 
+import com.example.raymundcat.safetycj.Constants;
 import com.example.raymundcat.safetycj.SToast;
 
 /**
@@ -18,6 +19,7 @@ public class SMSManager {
     private int retries = 3;
     private Context context;
     private boolean retryOnFail = false;
+    private String smsMessage = "";
 
 
     // TODO: Create class to get current coordinates
@@ -25,6 +27,11 @@ public class SMSManager {
     public SMSManager(Context context, boolean retryOnFail) {
         this.context = context;
         this.retryOnFail = retryOnFail;
+    }
+
+    public void createSMS(double lat, double lng, String facebookId, Constants.ReportType type, String message) {
+        this.smsMessage = String.format("lat=%f&lng=%f&facebookId=%s&type=%s&text=%s",
+                lat, lng, facebookId, type.name(), message);
     }
 
     public void sendMessage() {
@@ -91,7 +98,7 @@ public class SMSManager {
         }, new IntentFilter(DELIVERED));
 
         try {
-            SmsManager.getDefault().sendTextMessage(EMERGENCY_TXT_NUMBER, null, "Test SMS!!!", sentPI, deliveredPI);
+            SmsManager.getDefault().sendTextMessage(EMERGENCY_TXT_NUMBER, null, smsMessage, sentPI, deliveredPI);
         } catch (Exception e) {
 //            AlertDialog.Builder alertDialogBuilder = new
 //                    AlertDialog.Builder(this);

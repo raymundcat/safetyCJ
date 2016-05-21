@@ -27,6 +27,7 @@ import com.example.raymundcat.safetycj.fragments.MapFragment;
 import com.example.raymundcat.safetycj.fragments.ReportFragment;
 import com.example.raymundcat.safetycj.http.APIConstants;
 import com.example.raymundcat.safetycj.http.PostApiInterface;
+import com.example.raymundcat.safetycj.managers.SMSManager;
 import com.example.raymundcat.safetycj.managers.SharedPreferenceHelper;
 
 import org.androidannotations.annotations.AfterViews;
@@ -145,7 +146,7 @@ public class MainActivity extends Activity implements LocationListener {
     }
 
     public void sendReport() {
-        Constants.ReportType selectedReportType;
+        Constants.ReportType selectedReportType = getSelectedReportType();
 
         if (buttonCatcall.isSelected()) {
             selectedReportType = Constants.ReportType.CATCALL;
@@ -193,6 +194,25 @@ public class MainActivity extends Activity implements LocationListener {
         });
     }
 
+    Constants.ReportType getSelectedReportType() {
+        Constants.ReportType selectedReportType;
+        if (buttonCatcall.isSelected()) {
+            selectedReportType = Constants.ReportType.CATCALL;
+        }
+        else if (buttonStalking.isSelected()) {
+            selectedReportType = Constants.ReportType.STALKING;
+        }
+        else if (buttonEnvironment.isSelected()) {
+            selectedReportType = Constants.ReportType.ENVIRONMENT;
+        }
+        else {
+            selectedReportType = Constants.ReportType.ENVIRONMENT;
+            // TODO: Handle for no selected type
+        }
+
+        return selectedReportType;
+    }
+
     /**
      * helper to retrieve the path of an image URI
      */
@@ -219,6 +239,15 @@ public class MainActivity extends Activity implements LocationListener {
     @Click(R.id.home_button_wifi)
     void sendViaWifi() {
         sendReport();
+    }
+
+    @Click(R.id.home_button_sms)
+    void sendViaSMS() {
+        SMSManager smsManager = new SMSManager(this, true);
+        //add geolocation
+        String facebookId = SharedPreferenceHelper.getInstance().getString("facebookId");
+        smsManager.createSMS(14.723013, 121.039967, facebookId, getSelectedReportType(), reportText.getText().toString());
+        smsManager.sendMessage();
     }
 
     @AfterViews
