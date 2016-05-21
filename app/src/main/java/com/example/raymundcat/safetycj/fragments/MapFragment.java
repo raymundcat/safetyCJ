@@ -1,5 +1,6 @@
 package com.example.raymundcat.safetycj.fragments;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.example.raymundcat.safetycj.R;
@@ -15,6 +16,12 @@ public class MapFragment extends Fragment {
     public static MapFragment getInstance(){
         MapFragment fragment = new MapFragment_();
         return fragment;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+//        outState.putInt("curChoice", mCurCheckPosition);
     }
 
 }
