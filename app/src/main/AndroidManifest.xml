@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.raymundcat.safetycj" >
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,10 +12,8 @@
         android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
         android:name=".SafetyApplication_">
 
-        <uses-permission android:name="android.permission.INTERNET"/>
 
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
-
 
         <activity
             android:name=".SplashActivity_"
