@@ -3,7 +3,7 @@ package com.example.raymundcat.safetycj;
 import android.widget.Toast;
 
 /**
- * Created by Marbeen on 5/22/2016.
+ * Created by ceejei on 5/22/2016.
  */
 public class SToast {
 
