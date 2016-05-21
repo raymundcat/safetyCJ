@@ -8,7 +8,7 @@ public class Constants {
 
     public enum ReportType {
         STALKING,
-        HARASSMENT,
+        CATCALL,
         ENVIRONMENT
     }
 }

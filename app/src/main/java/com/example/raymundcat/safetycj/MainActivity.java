@@ -11,18 +11,33 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.raymundcat.safetycj.activities.MapActivity_;
 import com.example.raymundcat.safetycj.fragments.MapFragment;
 import com.example.raymundcat.safetycj.fragments.ReportFragment;
-import com.example.raymundcat.safetycj.managers.SMSManager;
+import com.example.raymundcat.safetycj.http.APIConstants;
+import com.example.raymundcat.safetycj.http.PostApiInterface;
+import com.example.raymundcat.safetycj.managers.SharedPreferenceHelper;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
+
+import java.io.File;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 @EActivity(R.layout.activity_main)
 public class MainActivity extends Activity {
@@ -31,6 +46,7 @@ public class MainActivity extends Activity {
     private static final int CAMERA_REQUEST = 2;
 
     private String selectedImagePath;
+//    private Constants.ReportType selectedReportType;
 
     @ViewById(R.id.main_toolbar_burger)
     Button burgerButton;
@@ -49,6 +65,9 @@ public class MainActivity extends Activity {
 
     @ViewById(R.id.home_text_attach)
     TextView attachTitle;
+
+    @ViewById(R.id.report_text)
+    EditText reportText;
 
     @Click(R.id.home_button_catcall)
     void didPressButtonCatcall(){
@@ -116,6 +135,58 @@ public class MainActivity extends Activity {
         }
     }
 
+    public void sendReport() {
+        Constants.ReportType selectedReportType;
+
+        if (buttonCatcall.isSelected()) {
+            selectedReportType = Constants.ReportType.CATCALL;
+        }
+        else if (buttonStalking.isSelected()) {
+            selectedReportType = Constants.ReportType.STALKING;
+        }
+        else if (buttonEnvironment.isSelected()) {
+            selectedReportType = Constants.ReportType.ENVIRONMENT;
+        }
+        else {
+            selectedReportType = Constants.ReportType.ENVIRONMENT;
+            // TODO: Handle for no selected type
+        }
+
+        File file = new File(selectedImagePath);
+        RequestBody fbody = RequestBody.create(MediaType.parse("image/*"), file);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(APIConstants.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        PostApiInterface apiInterface = retrofit.create(PostApiInterface.class);
+
+        String facebookId = SharedPreferenceHelper.getInstance().getString("facebookId");
+
+        // add geolocation
+        Call<ResponseBody> createReportCall = apiInterface.createReport(
+                selectedReportType.name(),
+                facebookId,
+                reportText.getText().toString(),
+                14.723013,
+                121.039967,
+                System.currentTimeMillis(),
+                fbody
+        );
+        createReportCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                SToast.showShortToast("Your Report has been submitted!");
+                // TODO: Clear all input
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                SToast.showShortToast("Sorry, There is something wrong in processing you report. PLease try again");
+            }
+        });
+    }
+
     /**
      * helper to retrieve the path of an image URI
      */
@@ -137,6 +208,11 @@ public class MainActivity extends Activity {
         }
         // this is our fallback here
         return uri.getPath();
+    }
+
+    @Click(R.id.home_button_wifi)
+    void sendViaWifi() {
+        sendReport();
     }
 
     @AfterViews

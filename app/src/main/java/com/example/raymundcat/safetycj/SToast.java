@@ -14,4 +14,10 @@ public class SToast {
         }
 
     }
+
+    public static void showShortToast(String message) {
+            Toast.makeText(SafetyApplication.context, message,
+                    Toast.LENGTH_SHORT).show();
+
+    }
 }
