@@ -6,6 +6,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.example.raymundcat.safetycj.activities.MapActivity_;
 import com.example.raymundcat.safetycj.fragments.MapFragment;
@@ -22,6 +24,54 @@ public class MainActivity extends Activity {
 
     @ViewById(R.id.main_toolbar_burger)
     Button burgerButton;
+
+    @ViewById(R.id.home_button_catcall)
+    ImageButton buttonCatcall;
+
+    @ViewById(R.id.home_button_stalking)
+    ImageButton buttonStalking;
+
+    @ViewById(R.id.home_button_environment)
+    ImageButton buttonEnvironment;
+
+    @ViewById(R.id.home_text_incident)
+    TextView incidentTitle;
+
+    @Click(R.id.home_button_catcall)
+    void didPressButtonCatcall(){
+        if (buttonCatcall.isSelected()){
+            buttonCatcall.setSelected(false);
+        }else {
+            incidentTitle.setText("Incident: Catcall");
+            buttonCatcall.setSelected(true);
+            buttonStalking.setSelected(false);
+            buttonEnvironment.setSelected(false);
+        }
+    }
+
+    @Click(R.id.home_button_stalking)
+    void didPreddButtonStalking(){
+        if (buttonStalking.isSelected()){
+            buttonStalking.setSelected(false);
+        }else {
+            incidentTitle.setText("Incident: Stalking");
+            buttonCatcall.setSelected(false);
+            buttonStalking.setSelected(true);
+            buttonEnvironment.setSelected(false);
+        }
+    }
+
+    @Click(R.id.home_button_environment)
+    void didPressButtonEnvironment(){
+        if (buttonEnvironment.isSelected()){
+            buttonEnvironment.setSelected(false);
+        }else {
+            incidentTitle.setText("Incident: Environment Report");
+            buttonCatcall.setSelected(false);
+            buttonStalking.setSelected(false);
+            buttonEnvironment.setSelected(true);
+        }
+    }
 
     @AfterViews
     void afterViews(){

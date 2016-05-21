@@ -390,5 +390,4 @@ public class MapActivity extends Activity{
             mOverlay = map.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
         }
     }
-
 }
