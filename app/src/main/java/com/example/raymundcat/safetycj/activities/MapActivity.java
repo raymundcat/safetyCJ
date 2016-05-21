@@ -116,7 +116,7 @@ public class MapActivity extends Activity{
         getLocationsCall.enqueue(new Callback<EventLocations>() {
             @Override
             public void onResponse(Call<EventLocations> call, Response<EventLocations> response) {
-                Log.i("", "Response lol" + response.body().locations.size());
+//                Log.i("", "Response lol" + response.body().locations.size());
 
                 origCopyLocations = response.body().locations;
 
