@@ -42,4 +42,5 @@ dependencies {
     compile 'com.android.support:support-v4:23.1.1'
     apt "org.androidannotations:androidannotations:$AAVersion"
     compile "org.androidannotations:androidannotations-api:$AAVersion"
+    compile 'com.facebook.android:facebook-android-sdk:4.5.0'
 }
