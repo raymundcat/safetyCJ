@@ -5,4 +5,10 @@ package com.example.raymundcat.safetycj;
  */
 public class Constants {
     public static boolean isDebug = true;
+
+    public enum ReportType {
+        STALKING,
+        HARASSMENT,
+        ENVIRONMENT
+    }
 }
