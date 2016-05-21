@@ -11,7 +11,7 @@ import android.telephony.SmsManager;
 import com.example.raymundcat.safetycj.SToast;
 
 /**
- * Created by Marbeen on 5/22/2016.
+ * Created by ceejei on 5/22/2016.
  */
 public class SMSManager {
     private static String EMERGENCY_TXT_NUMBER = "29290943438";
