@@ -10,21 +10,12 @@ import android.widget.Button;
 import com.example.raymundcat.safetycj.activities.MapActivity_;
 import com.example.raymundcat.safetycj.fragments.MapFragment;
 import com.example.raymundcat.safetycj.fragments.ReportFragment;
-import com.example.raymundcat.safetycj.http.APIConstants;
-import com.example.raymundcat.safetycj.http.PostApiInterface;
-import com.example.raymundcat.safetycj.models.User;
+import com.example.raymundcat.safetycj.managers.SMSManager;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 @EActivity(R.layout.activity_main)
 public class MainActivity extends Activity {
@@ -36,59 +27,10 @@ public class MainActivity extends Activity {
     void afterViews(){
     }
 
-//    @Click(R.id.testbutton)
+    @Click(R.id.testbutton)
     void testButtonClick() {
-        String API = APIConstants.BASE_URL;
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(API)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        PostApiInterface getInt = retrofit.create(PostApiInterface.class);
-        User user1 = new User();
-        user1.facebookId = "098765";
-        user1.birthday = "01/01/1992";
-        user1.name = "CJ TEST2";
-        user1.email = "cj@gmail.com";
-
-//        Call<ResponseBody> call = getInt.createUser(user1.name, user1.facebookId, user1.birthday);
-//        call.enqueue(new Callback<ResponseBody>() {
-//            @Override
-//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-//                Log.d("RETROFIT S:", response.toString());
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ResponseBody> call, Throwable t) {
-//                Log.d("RETROFIT F:", t.getMessage());
-//            }
-//        });
-
-//        Call<ResponseBody> call = getInt.createUser(user1);
-        Call<ResponseBody> call = getInt.createUser(user1.name, user1.facebookId, user1.birthday, user1.email);
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Log.d("RETROFIT S:", response.toString());
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.d("RETROFIT F:", t.getMessage());
-            }
-        });
-//        call.enqueue(new Callback<User>() {
-//            @Override
-//            public void onResponse(Call<User> call, Response<User> response) {
-//                Log.d("RETROFIT S:", response.toString());
-//            }
-//
-//            @Override
-//            public void onFailure(Call<User> call, Throwable t) {
-//                Log.d("RETROFIT F:", t.getMessage());
-//            }
-//        });
-
-
+        SMSManager smsManager = new SMSManager(this, true);
+        smsManager.sendMessage();
     }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
