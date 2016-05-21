@@ -17,7 +17,7 @@
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCKjhD-sA3o_3x79wMZoSqIbFY7Mh9qxL8"/>
+            android:value="AIzaSyCoUIpzU5FcU9ej5AU6jtEnXNOHMbvW5LQ"/>
 
         <activity
             android:name=".SplashActivity_"
