@@ -43,7 +43,7 @@ public interface PostApiInterface {
     );
 
     @Multipart
-    @POST ("/api/reports")
+    @POST ("/api-debug/reports")
     Call<ResponseBody> createReport(
             @Part("type") String type,
             @Part("facebookId") String facebookId,

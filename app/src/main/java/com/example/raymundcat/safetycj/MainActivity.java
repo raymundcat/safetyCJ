@@ -77,7 +77,7 @@ public class MainActivity extends Activity implements LocationListener {
     EditText reportText;
 
     protected LocationManager locationManager;
-    Double latitude,longitude;
+    double latitude,longitude;
 
     @Click(R.id.home_button_catcall)
     void didPressButtonCatcall() {
@@ -175,8 +175,8 @@ public class MainActivity extends Activity implements LocationListener {
                 selectedReportType.name(),
                 facebookId,
                 reportText.getText().toString(),
-                14.723013,
-                121.039967,
+                latitude,
+                longitude,
                 System.currentTimeMillis(),
                 fbody
         );
@@ -246,7 +246,7 @@ public class MainActivity extends Activity implements LocationListener {
         SMSManager smsManager = new SMSManager(this, true);
         //add geolocation
         String facebookId = SharedPreferenceHelper.getInstance().getString("facebookId");
-        smsManager.createSMS(14.723013, 121.039967, facebookId, getSelectedReportType(), reportText.getText().toString());
+        smsManager.createSMS(latitude, longitude, facebookId, getSelectedReportType(), reportText.getText().toString());
         smsManager.sendMessage();
     }
 
