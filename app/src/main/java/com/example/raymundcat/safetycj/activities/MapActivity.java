@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.UiThread;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.raymundcat.safetycj.R;
@@ -26,6 +27,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
 import org.json.JSONException;
 
 import java.io.IOException;
@@ -58,6 +60,15 @@ public class MapActivity extends Activity{
     ArrayList<EventLocations.EventLocation> origCopyLocations = new ArrayList<EventLocations.EventLocation>();
     HeatmapTileProvider mProvider;
     TileOverlay mOverlay;
+
+    @ViewById(R.id.map_button_morning)
+    Button buttonMorning;
+
+    @ViewById(R.id.map_button_noon)
+    Button buttonNoon;
+
+    @ViewById(R.id.map_button_night)
+    Button buttonNight;
 
     @AfterViews
     void afterViews(){
@@ -114,94 +125,71 @@ public class MapActivity extends Activity{
 
     @Click(R.id.map_button_morning)
     void filterTimeMorning(){
-        //remove the tile first
-        mOverlay.remove();
-
-        //filter all the timestamps per morning
-        Calendar calendar = Calendar.getInstance();
-        TimeZone tz = TimeZone.getDefault();
-//        calendar.setTimeInMillis(timestamp * 1000);
-//        calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
-
-        list.removeAll(list);
-        for (EventLocations.EventLocation location : origCopyLocations) {
-
-            //add the checker for time here
-            calendar.setTimeInMillis((long) (location.timestamp * 1000));
-            Log.i("", "Hour: " + calendar.get(Calendar.HOUR_OF_DAY));
-            if (calendar.get(Calendar.HOUR) < 9){
-                LatLng latlng = new LatLng(location.lat, location.lng);
-                list.add(latlng);
-            }
-        }
-
-        if(list.size() > 0){
-            // Create a heat map tile provider, passing it the latlngs of the police stations.
-            mProvider = new HeatmapTileProvider.Builder()
-                    .data(list)
-                    .build();
-            mProvider.setRadius(50);
-
-            // Add a tile overlay to the map, using the heat map tile provider.
-            mOverlay = map.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
-        }
+        buttonMorning.setSelected(true);
+        buttonNoon.setSelected(false);
+        buttonNight.setSelected(false);
+        updateMapOverlay();
     }
 
     @Click(R.id.map_button_noon)
     void filterTimeNoon(){
-        //remove the tile first
-        mOverlay.remove();
-
-        //filter all the timestamps per morning
-        Calendar calendar = Calendar.getInstance();
-        TimeZone tz = TimeZone.getDefault();
-//        calendar.setTimeInMillis(timestamp * 1000);
-//        calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
-
-        list.removeAll(list);
-        for (EventLocations.EventLocation location : origCopyLocations) {
-
-            //add the checker for time here
-            calendar.setTimeInMillis((long) (location.timestamp * 1000));
-            Log.i("", "Hour: " + calendar.get(Calendar.HOUR_OF_DAY));
-            if (calendar.get(Calendar.HOUR) >= 9 && calendar.get(Calendar.HOUR) < 17){
-                LatLng latlng = new LatLng(location.lat, location.lng);
-                list.add(latlng);
-            }
-        }
-
-        if(list.size() > 0){
-            // Create a heat map tile provider, passing it the latlngs of the police stations.
-            mProvider = new HeatmapTileProvider.Builder()
-                    .data(list)
-                    .build();
-            mProvider.setRadius(50);
-
-            // Add a tile overlay to the map, using the heat map tile provider.
-            mOverlay = map.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
-        }
+        buttonMorning.setSelected(false);
+        buttonNoon.setSelected(true);
+        buttonNight.setSelected(false);
+        updateMapOverlay();
     }
 
     @Click(R.id.map_button_night)
     void filterTimeNight(){
+        buttonMorning.setSelected(false);
+        buttonNoon.setSelected(false);
+        buttonNight.setSelected(true);
+        updateMapOverlay();
+    }
+
+    void updateMapOverlay(){
         //remove the tile first
         mOverlay.remove();
 
         //filter all the timestamps per morning
         Calendar calendar = Calendar.getInstance();
         TimeZone tz = TimeZone.getDefault();
-//        calendar.setTimeInMillis(timestamp * 1000);
-//        calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
 
+        //remove overlays first
         list.removeAll(list);
-        for (EventLocations.EventLocation location : origCopyLocations) {
 
-            //add the checker for time here
-            calendar.setTimeInMillis((long) (location.timestamp * 1000));
-            Log.i("", "Hour: " + calendar.get(Calendar.HOUR_OF_DAY));
-            if (calendar.get(Calendar.HOUR) < 6 || calendar.get(Calendar.HOUR) > 16){
-                LatLng latlng = new LatLng(location.lat, location.lng);
-                list.add(latlng);
+        if(buttonMorning.isSelected()){
+            for (EventLocations.EventLocation location : origCopyLocations) {
+
+                //add the checker for time here
+                calendar.setTimeInMillis((long) (location.timestamp * 1000));
+                Log.i("", "Hour: " + calendar.get(Calendar.HOUR_OF_DAY));
+                if (calendar.get(Calendar.HOUR) < 9){
+                    LatLng latlng = new LatLng(location.lat, location.lng);
+                    list.add(latlng);
+                }
+            }
+        }else if(buttonNoon.isSelected()){
+            for (EventLocations.EventLocation location : origCopyLocations) {
+
+                //add the checker for time here
+                calendar.setTimeInMillis((long) (location.timestamp * 1000));
+                Log.i("", "Hour: " + calendar.get(Calendar.HOUR_OF_DAY));
+                if (calendar.get(Calendar.HOUR) >= 9 && calendar.get(Calendar.HOUR) < 17){
+                    LatLng latlng = new LatLng(location.lat, location.lng);
+                    list.add(latlng);
+                }
+            }
+        }else if(buttonNight.isSelected()){
+            for (EventLocations.EventLocation location : origCopyLocations) {
+
+                //add the checker for time here
+                calendar.setTimeInMillis((long) (location.timestamp * 1000));
+                Log.i("", "Hour: " + calendar.get(Calendar.HOUR_OF_DAY));
+                if (calendar.get(Calendar.HOUR) < 6 || calendar.get(Calendar.HOUR) > 16){
+                    LatLng latlng = new LatLng(location.lat, location.lng);
+                    list.add(latlng);
+                }
             }
         }
 
@@ -216,4 +204,5 @@ public class MapActivity extends Activity{
             mOverlay = map.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
         }
     }
+
 }
