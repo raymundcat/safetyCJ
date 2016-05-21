@@ -135,49 +135,73 @@ public class MapActivity extends Activity{
 
     @Click(R.id.map_button_morning)
     void filterTimeMorning(){
-        buttonMorning.setSelected(true);
-        buttonNoon.setSelected(false);
-        buttonNight.setSelected(false);
+        if(buttonMorning.isSelected()){
+            buttonMorning.setSelected(false);
+        }else {
+            buttonMorning.setSelected(true);
+            buttonNoon.setSelected(false);
+            buttonNight.setSelected(false);
+        }
         updateMapOverlay();
     }
 
     @Click(R.id.map_button_noon)
     void filterTimeNoon(){
-        buttonMorning.setSelected(false);
-        buttonNoon.setSelected(true);
-        buttonNight.setSelected(false);
+        if(buttonNoon.isSelected()){
+            buttonNoon.setSelected(false);
+        }else{
+            buttonMorning.setSelected(false);
+            buttonNoon.setSelected(true);
+            buttonNight.setSelected(false);
+        }
         updateMapOverlay();
     }
 
     @Click(R.id.map_button_night)
     void filterTimeNight(){
-        buttonMorning.setSelected(false);
-        buttonNoon.setSelected(false);
-        buttonNight.setSelected(true);
+        if (buttonNight.isSelected()){
+            buttonNight.setSelected(false);
+        }else {
+            buttonMorning.setSelected(false);
+            buttonNoon.setSelected(false);
+            buttonNight.setSelected(true);
+        }
         updateMapOverlay();
     }
 
     @Click(R.id.map_button_3months)
     void filter3Month(){
-        button3Month.setSelected(true);
-        button1Month.setSelected(false);
-        button1Week.setSelected(false);
+        if (button3Month.isSelected()){
+            button3Month.setSelected(false);
+        }else {
+            button3Month.setSelected(true);
+            button1Month.setSelected(false);
+            button1Week.setSelected(false);
+        }
         updateMapOverlay();
     }
 
     @Click(R.id.map_button_1months)
     void filter1Month(){
-        button3Month.setSelected(false);
-        button1Month.setSelected(true);
-        button1Week.setSelected(false);
+        if(button1Month.isSelected()){
+            button1Month.setSelected(false);
+        }else{
+            button3Month.setSelected(false);
+            button1Month.setSelected(true);
+            button1Week.setSelected(false);
+        }
         updateMapOverlay();
     }
 
     @Click(R.id.map_button_1week)
     void filter1Week(){
-        button3Month.setSelected(false);
-        button1Month.setSelected(false);
-        button1Week.setSelected(true);
+        if(button1Week.isSelected()){
+            button1Week.setSelected(false);
+        }else{
+            button3Month.setSelected(false);
+            button1Month.setSelected(false);
+            button1Week.setSelected(true);
+        }
         updateMapOverlay();
     }
 

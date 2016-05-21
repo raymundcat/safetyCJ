@@ -27,11 +27,11 @@ public class MainActivity extends Activity {
     void afterViews(){
     }
 
-    @Click(R.id.testbutton)
-    void testButtonClick() {
-        SMSManager smsManager = new SMSManager(this, true);
-        smsManager.sendMessage();
-    }
+//    @Click(R.id.testbutton)
+//    void testButtonClick() {
+//        SMSManager smsManager = new SMSManager(this, true);
+//        smsManager.sendMessage();
+//    }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
 
