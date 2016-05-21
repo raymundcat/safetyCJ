@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="130dp"
         android:background="@color/White"
         android:orientation="vertical">
 
@@ -87,6 +87,45 @@
                 android:layout_width="80dp"
                 android:layout_height="40dp"
                 android:text="1 Week"
+                android:background="@drawable/rounded_button"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <TextView
+                android:padding="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Incident Type"
+                />
+            <Button
+                android:id="@+id/map_button_catcalls"
+                android:padding="10dp"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:text="Catcalls"
+                android:background="@drawable/rounded_button"/>
+
+            <Button
+                android:id="@+id/map_button_stalking"
+                android:padding="10dp"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:text="Stalking"
+                android:background="@drawable/rounded_button"/>
+
+            <Button
+                android:id="@+id/map_button_environment"
+                android:padding="10dp"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:text="Environment"
                 android:background="@drawable/rounded_button"/>
 
         </LinearLayout>

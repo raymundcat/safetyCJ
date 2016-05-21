@@ -80,6 +80,15 @@ public class MapActivity extends Activity{
     @ViewById(R.id.map_button_1week)
     Button button1Week;
 
+    @ViewById(R.id.map_button_catcalls)
+    Button buttonCatcalls;
+
+    @ViewById(R.id.map_button_stalking)
+    Button buttonStalking;
+
+    @ViewById(R.id.map_button_environment)
+    Button buttonEnvironment;
+
     @AfterViews
     void afterViews(){
         map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
@@ -205,6 +214,42 @@ public class MapActivity extends Activity{
         updateMapOverlay();
     }
 
+    @Click(R.id.map_button_catcalls)
+    void filterCatcalls(){
+        if(buttonCatcalls.isSelected()){
+            buttonCatcalls.setSelected(false);
+        }else{
+            buttonCatcalls.setSelected(true);
+            buttonStalking.setSelected(false);
+            buttonEnvironment.setSelected(false);
+        }
+        updateMapOverlay();
+    }
+
+    @Click(R.id.map_button_stalking)
+    void filterStalking(){
+        if(buttonStalking.isSelected()){
+            buttonStalking.setSelected(false);
+        }else{
+            buttonCatcalls.setSelected(false);
+            buttonStalking.setSelected(true);
+            buttonEnvironment.setSelected(false);
+        }
+        updateMapOverlay();
+    }
+
+    @Click(R.id.map_button_environment)
+    void filterEnvironment(){
+        if(buttonEnvironment.isSelected()){
+            buttonEnvironment.setSelected(false);
+        }else{
+            buttonCatcalls.setSelected(false);
+            buttonStalking.setSelected(false);
+            buttonEnvironment.setSelected(true);
+        }
+        updateMapOverlay();
+    }
+
     void updateMapOverlay(){
         //remove the tile first
         mOverlay.remove();
@@ -301,8 +346,35 @@ public class MapActivity extends Activity{
             }
         }
 
+        ArrayList<EventLocations.EventLocation> dummyCopyLocations3 = new ArrayList<EventLocations.EventLocation>();
+
+        //now filter type
+        if(buttonCatcalls.isSelected()){
+            for (EventLocations.EventLocation location : dummyCopyLocations2) {
+                if (location.type.equalsIgnoreCase("CATCALLING")){
+                    dummyCopyLocations3.add(location);
+                }
+            }
+        }else if(buttonStalking.isSelected()){
+            for (EventLocations.EventLocation location : dummyCopyLocations2) {
+                if (location.type.equalsIgnoreCase("STALKING")){
+                    dummyCopyLocations3.add(location);
+                }
+            }
+        }else if(buttonEnvironment.isSelected()){
+            for (EventLocations.EventLocation location : dummyCopyLocations2) {
+                if (location.type.equalsIgnoreCase("ENVIRONMENT")){
+                    dummyCopyLocations3.add(location);
+                }
+            }
+        }else {
+            for (EventLocations.EventLocation location : dummyCopyLocations2) {
+                dummyCopyLocations3.add(location);
+            }
+        }
+
         //now convert all dummy locations to long lats
-        for (EventLocations.EventLocation location : dummyCopyLocations2) {
+        for (EventLocations.EventLocation location : dummyCopyLocations3) {
             LatLng latlng = new LatLng(location.lat, location.lng);
             list.add(latlng);
         }
