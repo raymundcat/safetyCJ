@@ -41,6 +41,10 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     apt "org.androidannotations:androidannotations:$AAVersion"
     compile "org.androidannotations:androidannotations-api:$AAVersion"
+//    compile "com.android.support:appcompat-v7:23.0.1"
+//    compile "com.android.support:design-v7:23.0.1"
     compile 'com.android.support:support-v4:23.3.0'
     compile 'com.facebook.android:facebook-android-sdk:4.5.0'
+    compile 'com.squareup.retrofit2:retrofit:2.0.2'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.2'
 }
