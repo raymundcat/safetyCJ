@@ -19,6 +19,7 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -44,22 +45,50 @@ public class MainActivity extends Activity {
                 .build();
         PostApiInterface getInt = retrofit.create(PostApiInterface.class);
         User user1 = new User();
-        user1.facebookId = "facebook:test";
+        user1.facebookId = "098765";
         user1.birthday = "01/01/1992";
-        user1.name = "CJ TEST1";
+        user1.name = "CJ TEST2";
+        user1.email = "cj@gmail.com";
 
-        Call<User> call = getInt.createUser(user1);
-        call.enqueue(new Callback<User>() {
+//        Call<ResponseBody> call = getInt.createUser(user1.name, user1.facebookId, user1.birthday);
+//        call.enqueue(new Callback<ResponseBody>() {
+//            @Override
+//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//                Log.d("RETROFIT S:", response.toString());
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ResponseBody> call, Throwable t) {
+//                Log.d("RETROFIT F:", t.getMessage());
+//            }
+//        });
+
+//        Call<ResponseBody> call = getInt.createUser(user1);
+        Call<ResponseBody> call = getInt.createUser(user1.name, user1.facebookId, user1.birthday, user1.email);
+        call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Log.d("RETROFIT S:", response.toString());
             }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Log.d("RETROFIT F:", t.getMessage());
             }
         });
+//        call.enqueue(new Callback<User>() {
+//            @Override
+//            public void onResponse(Call<User> call, Response<User> response) {
+//                Log.d("RETROFIT S:", response.toString());
+//            }
+//
+//            @Override
+//            public void onFailure(Call<User> call, Throwable t) {
+//                Log.d("RETROFIT F:", t.getMessage());
+//            }
+//        });
+
+
     }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
