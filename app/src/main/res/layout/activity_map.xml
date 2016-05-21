@@ -30,19 +30,22 @@
                 android:padding="10dp"
                 android:layout_width="80dp"
                 android:layout_height="40dp"
-                android:text="Morning"/>
+                android:text="Morning"
+                android:background="@drawable/rounded_button"/>
 
             <Button
                 android:padding="10dp"
                 android:layout_width="80dp"
                 android:layout_height="40dp"
-                android:text="Noon"/>
+                android:text="Noon"
+                android:background="@drawable/rounded_button"/>
 
             <Button
                 android:padding="10dp"
                 android:layout_width="80dp"
                 android:layout_height="40dp"
-                android:text="Night"/>
+                android:text="Night"
+                android:background="@drawable/rounded_button"/>
 
         </LinearLayout>
 
@@ -57,24 +60,28 @@
                 android:padding="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Date Range: "/>
+                android:text="Date Range: "
+                />
             <Button
                 android:padding="10dp"
                 android:layout_width="80dp"
                 android:layout_height="40dp"
-                android:text="3 Months"/>
+                android:text="3 Months"
+                android:background="@drawable/rounded_button"/>
 
             <Button
                 android:padding="10dp"
                 android:layout_width="80dp"
                 android:layout_height="40dp"
-                android:text="1 Month"/>
+                android:text="1 Month"
+                android:background="@drawable/rounded_button"/>
 
             <Button
                 android:padding="10dp"
                 android:layout_width="80dp"
                 android:layout_height="40dp"
-                android:text="1 Week"/>
+                android:text="1 Week"
+                android:background="@drawable/rounded_button"/>
 
         </LinearLayout>
 
