@@ -35,7 +35,7 @@ public class MainActivity extends Activity {
     void afterViews(){
     }
 
-    @Click(R.id.testbutton)
+//    @Click(R.id.testbutton)
     void testButtonClick() {
         String API = APIConstants.BASE_URL;
         Retrofit retrofit = new Retrofit.Builder()

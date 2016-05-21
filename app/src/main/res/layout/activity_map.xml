@@ -4,6 +4,47 @@
     android:layout_height="match_parent"
     android:background="@color/ForestGreen">
 
+    <include layout="@layout/toolbar_map"
+        android:id="@+id/map_toolbar"></include>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@color/White"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Time Range: "/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Time Range: "/>
+
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
     <fragment
         android:id="@+id/map"
         android:layout_width="match_parent"
