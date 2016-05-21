@@ -1,12 +1,13 @@
 package com.example.raymundcat.safetycj;
 
+import android.app.Activity;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.widget.Button;
 
+import com.example.raymundcat.safetycj.activities.MapActivity_;
 import com.example.raymundcat.safetycj.fragments.MapFragment;
 import com.example.raymundcat.safetycj.fragments.ReportFragment;
 import com.example.raymundcat.safetycj.http.APIConstants;
@@ -16,6 +17,7 @@ import com.example.raymundcat.safetycj.models.User;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -24,21 +26,13 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 @EActivity(R.layout.activity_main)
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends Activity {
 
-    ScreenSlidePagerAdapter mScreenSlidePagerAdapter;
-    ViewPager mViewPager;
+    @ViewById(R.id.main_toolbar_burger)
+    Button burgerButton;
 
     @AfterViews
     void afterViews(){
-//        mScreenSlidePagerAdapter =
-//                new ScreenSlidePagerAdapter(
-//                        getSupportFragmentManager());
-//        mViewPager = (ViewPager) findViewById(R.id.pager);
-//        mViewPager.setAdapter(mScreenSlidePagerAdapter);
-
-//        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
-//        tabLayout.setupWithViewPager(viewPager);
     }
 
     @Click(R.id.testbutton)
@@ -97,5 +91,14 @@ public class MainActivity extends FragmentActivity {
             // Generate title based on item position
             return tabTitles[position];
         }
+
     }
+
+    @Click(R.id.main_toolbar_burger)
+    void didPressMainBurger(){
+        MapActivity_.intent(this).start();
+        Log.i("","im clicked");
+    }
+
+
 }
