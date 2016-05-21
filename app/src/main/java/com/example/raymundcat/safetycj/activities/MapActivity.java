@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -69,6 +70,15 @@ public class MapActivity extends Activity{
 
     @ViewById(R.id.map_button_night)
     Button buttonNight;
+
+    @ViewById(R.id.map_button_3months)
+    Button button3Month;
+
+    @ViewById(R.id.map_button_1months)
+    Button button1Month;
+
+    @ViewById(R.id.map_button_1week)
+    Button button1Week;
 
     @AfterViews
     void afterViews(){
@@ -147,6 +157,30 @@ public class MapActivity extends Activity{
         updateMapOverlay();
     }
 
+    @Click(R.id.map_button_3months)
+    void filter3Month(){
+        button3Month.setSelected(true);
+        button1Month.setSelected(false);
+        button1Week.setSelected(false);
+        updateMapOverlay();
+    }
+
+    @Click(R.id.map_button_1months)
+    void filter1Month(){
+        button3Month.setSelected(false);
+        button1Month.setSelected(true);
+        button1Week.setSelected(false);
+        updateMapOverlay();
+    }
+
+    @Click(R.id.map_button_1week)
+    void filter1Week(){
+        button3Month.setSelected(false);
+        button1Month.setSelected(false);
+        button1Week.setSelected(true);
+        updateMapOverlay();
+    }
+
     void updateMapOverlay(){
         //remove the tile first
         mOverlay.remove();
@@ -158,15 +192,16 @@ public class MapActivity extends Activity{
         //remove overlays first
         list.removeAll(list);
 
+        ArrayList<EventLocations.EventLocation> dummyCopyLocations = new ArrayList<EventLocations.EventLocation>();
+
+        //filtering per time
         if(buttonMorning.isSelected()){
             for (EventLocations.EventLocation location : origCopyLocations) {
 
                 //add the checker for time here
                 calendar.setTimeInMillis((long) (location.timestamp * 1000));
-                Log.i("", "Hour: " + calendar.get(Calendar.HOUR_OF_DAY));
                 if (calendar.get(Calendar.HOUR) < 9){
-                    LatLng latlng = new LatLng(location.lat, location.lng);
-                    list.add(latlng);
+                    dummyCopyLocations.add(location);
                 }
             }
         }else if(buttonNoon.isSelected()){
@@ -174,10 +209,8 @@ public class MapActivity extends Activity{
 
                 //add the checker for time here
                 calendar.setTimeInMillis((long) (location.timestamp * 1000));
-                Log.i("", "Hour: " + calendar.get(Calendar.HOUR_OF_DAY));
                 if (calendar.get(Calendar.HOUR) >= 9 && calendar.get(Calendar.HOUR) < 17){
-                    LatLng latlng = new LatLng(location.lat, location.lng);
-                    list.add(latlng);
+                    dummyCopyLocations.add(location);
                 }
             }
         }else if(buttonNight.isSelected()){
@@ -185,12 +218,69 @@ public class MapActivity extends Activity{
 
                 //add the checker for time here
                 calendar.setTimeInMillis((long) (location.timestamp * 1000));
-                Log.i("", "Hour: " + calendar.get(Calendar.HOUR_OF_DAY));
                 if (calendar.get(Calendar.HOUR) < 6 || calendar.get(Calendar.HOUR) > 16){
-                    LatLng latlng = new LatLng(location.lat, location.lng);
-                    list.add(latlng);
+                    dummyCopyLocations.add(location);
                 }
             }
+        }else{
+            for (EventLocations.EventLocation location : origCopyLocations) {
+                dummyCopyLocations.add(location);
+            }
+        }
+
+        ArrayList<EventLocations.EventLocation> dummyCopyLocations2 = new ArrayList<EventLocations.EventLocation>();
+
+        //beginning time
+        Calendar startCalendar = new GregorianCalendar();
+        //this is today
+        Calendar endCalendar = new GregorianCalendar();
+
+        if (button3Month.isSelected()){
+            for (EventLocations.EventLocation location : dummyCopyLocations) {
+
+                //add the checker for time here
+                startCalendar.setTimeInMillis((long) (location.timestamp * 1000));
+                int diffYear = endCalendar.get(Calendar.YEAR) - startCalendar.get(Calendar.YEAR);
+                int diffMonth = diffYear * 12 + endCalendar.get(Calendar.MONTH) - startCalendar.get(Calendar.MONTH);
+
+                if(diffMonth > 1){
+                    dummyCopyLocations2.add(location);
+                }
+            }
+        }else if (button1Month.isSelected()){
+            for (EventLocations.EventLocation location : dummyCopyLocations) {
+
+                //add the checker for time here
+                startCalendar.setTimeInMillis((long) (location.timestamp * 1000));
+                int diffYear = endCalendar.get(Calendar.YEAR) - startCalendar.get(Calendar.YEAR);
+                int diffMonth = diffYear * 12 + endCalendar.get(Calendar.MONTH) - startCalendar.get(Calendar.MONTH);
+
+                if(diffMonth < 1){
+                    dummyCopyLocations2.add(location);
+                }
+            }
+        }if (button1Week.isSelected()){
+            for (EventLocations.EventLocation location : dummyCopyLocations) {
+
+                //add the checker for time here
+                startCalendar.setTimeInMillis((long) (location.timestamp * 1000));
+                int diffYear = endCalendar.get(Calendar.YEAR) - startCalendar.get(Calendar.YEAR);
+                int diffMonth = diffYear * 12 + endCalendar.get(Calendar.DAY_OF_YEAR) - startCalendar.get(Calendar.DAY_OF_YEAR);
+
+                if(diffMonth < 7){
+                    dummyCopyLocations2.add(location);
+                }
+            }
+        }else{
+            for (EventLocations.EventLocation location : dummyCopyLocations) {
+                dummyCopyLocations2.add(location);
+            }
+        }
+
+        //now convert all dummy locations to long lats
+        for (EventLocations.EventLocation location : dummyCopyLocations2) {
+            LatLng latlng = new LatLng(location.lat, location.lng);
+            list.add(latlng);
         }
 
         if(list.size() > 0){
