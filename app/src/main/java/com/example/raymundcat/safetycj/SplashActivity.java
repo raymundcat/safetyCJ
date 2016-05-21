@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.raymundcat.safetycj.managers.SharedPreferenceHelper;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
@@ -21,6 +22,8 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Arrays;
 
 /**
  * Created by Raymund on 21/05/2016.
@@ -40,10 +43,12 @@ public class SplashActivity extends Activity {
         callbackManager = CallbackManager.Factory.create();
 
         loginButton.setReadPermissions("email");
+//        , "user_birthday"
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.i("", "Login results: " + loginResult.getAccessToken().getUserId());
+                saveUser(loginResult.getAccessToken().getUserId());
                 MainActivity_.intent(SplashActivity.this).start();
             }
 
@@ -62,6 +67,10 @@ public class SplashActivity extends Activity {
             MainActivity_.intent(SplashActivity.this).start();
         }
 
+    }
+
+    private void saveUser(String userId) {
+        SharedPreferenceHelper.getInstance().putString("facebookId", userId);
     }
 
     @Override
