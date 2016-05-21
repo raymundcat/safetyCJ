@@ -5,7 +5,7 @@ package com.example.raymundcat.safetycj.models;
  */
 public class User {
 
-    public int _id;
+//    public int _id;
     public String facebookId;
     public String email;
     public String birthday;
