@@ -11,5 +11,6 @@ public class EventLocations {
     public class EventLocation{
         public double lat;
         public double lng;
+        public double timestamp;
     }
 }
