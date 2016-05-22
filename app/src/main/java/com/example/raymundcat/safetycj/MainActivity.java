@@ -157,6 +157,11 @@ public class MainActivity extends Activity implements LocationListener {
     public void sendReport() {
         Constants.ReportType selectedReportType = getSelectedReportType();
 
+        if(selectedReportType == null) {
+            SToast.showShortToast("Please Select an Incident Type before Sending");
+            return;
+        }
+
         RequestBody fbody = null;
         if (selectedImagePath != null) {
             File file = new File(selectedImagePath);
@@ -187,7 +192,7 @@ public class MainActivity extends Activity implements LocationListener {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 SToast.showShortToast("Your Report has been submitted!");
-                // TODO: Clear all input
+                clearData();
             }
 
             @Override
@@ -209,7 +214,7 @@ public class MainActivity extends Activity implements LocationListener {
             selectedReportType = Constants.ReportType.ENVIRONMENT;
         }
         else {
-            selectedReportType = Constants.ReportType.ENVIRONMENT;
+            selectedReportType = null;
         }
 
         return selectedReportType;
@@ -245,11 +250,28 @@ public class MainActivity extends Activity implements LocationListener {
 
     @Click(R.id.home_button_sms)
     void sendViaSMS() {
+        Constants.ReportType selectedReportType = getSelectedReportType();
+
+        if(selectedReportType == null) {
+            SToast.showShortToast("Please Select an Incident Type before Sending");
+            return;
+        }
+
         SMSManager smsManager = new SMSManager(this, true);
         //add geolocation
         String facebookId = SharedPreferenceHelper.getInstance().getString("facebookId");
-        smsManager.createSMS(latitude, longitude, facebookId, getSelectedReportType(), reportText.getText().toString());
+        smsManager.createSMS(latitude, longitude, facebookId, selectedReportType, reportText.getText().toString());
         smsManager.sendMessage();
+        clearData();
+    }
+
+    void clearData() {
+        reportText.setText("");
+        buttonStalking.setSelected(false);
+        buttonCatcall.setSelected(false);
+        buttonEnvironment.setSelected(false);
+        selectedImagePath = null;
+
     }
 
     @AfterViews
