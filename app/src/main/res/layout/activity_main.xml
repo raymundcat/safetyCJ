@@ -143,7 +143,7 @@
                     android:layout_width="90dp"
                     android:layout_height="90dp"
                     android:background="@drawable/rounded_button_home"
-                    android:src="@drawable/icon_wifi"
+                    android:src="@drawable/icon_wifi_2"
                     android:scaleType="fitCenter"/>
 
             </LinearLayout>
