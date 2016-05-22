@@ -98,9 +98,9 @@ public class MapActivity extends Activity implements LocationListener {
         map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
                 .getMap();
 
-//        float zoomLevel = (float) 16.8; //This goes up to 21
-//        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(14.700127,121.033723), zoomLevel));
-//        addHeatMap();
+        float zoomLevel = (float) 16.8; //This goes up to 21
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(14.700127,121.033723), zoomLevel));
+        addHeatMap();
 
         locationManager = (LocationManager) getSystemService(this.LOCATION_SERVICE);
         try{
@@ -362,20 +362,26 @@ public class MapActivity extends Activity implements LocationListener {
         //now filter type
         if(buttonCatcalls.isSelected()){
             for (EventLocations.EventLocation location : dummyCopyLocations2) {
-                if (location.type.equalsIgnoreCase("CATCALLING")){
-                    dummyCopyLocations3.add(location);
+                if(location.type != null){
+                    if (location.type.equalsIgnoreCase("CATCALLING")){
+                        dummyCopyLocations3.add(location);
+                    }
                 }
             }
         }else if(buttonStalking.isSelected()){
             for (EventLocations.EventLocation location : dummyCopyLocations2) {
-                if (location.type.equalsIgnoreCase("STALKING")){
-                    dummyCopyLocations3.add(location);
+                if(location.type != null) {
+                    if (location.type.equalsIgnoreCase("STALKING")) {
+                        dummyCopyLocations3.add(location);
+                    }
                 }
             }
         }else if(buttonEnvironment.isSelected()){
             for (EventLocations.EventLocation location : dummyCopyLocations2) {
-                if (location.type.equalsIgnoreCase("ENVIRONMENT")){
-                    dummyCopyLocations3.add(location);
+                if(location.type != null) {
+                    if (location.type.equalsIgnoreCase("ENVIRONMENT")) {
+                        dummyCopyLocations3.add(location);
+                    }
                 }
             }
         }else {
