@@ -2,6 +2,7 @@ package com.example.raymundcat.safetycj;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -29,12 +30,14 @@ import com.example.raymundcat.safetycj.http.APIConstants;
 import com.example.raymundcat.safetycj.http.PostApiInterface;
 import com.example.raymundcat.safetycj.managers.SMSManager;
 import com.example.raymundcat.safetycj.managers.SharedPreferenceHelper;
+import com.example.raymundcat.safetycj.managers.StringConverterFactory;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 
 import okhttp3.MediaType;
@@ -141,38 +144,41 @@ public class MainActivity extends Activity implements LocationListener {
 
         if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
             Bitmap photo = (Bitmap) data.getExtras().get("data");
+            Uri selectedImageUri = getImageUri(getApplicationContext(), photo);
+            String selectedImagePathFromPhoto = getPath(selectedImageUri);
             attachTitle.setText("Attachment: Photo from Camera");
         }
+    }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
     }
 
     public void sendReport() {
         Constants.ReportType selectedReportType = getSelectedReportType();
 
-        if (buttonCatcall.isSelected()) {
-            selectedReportType = Constants.ReportType.CATCALL;
-        } else if (buttonStalking.isSelected()) {
-            selectedReportType = Constants.ReportType.STALKING;
-        } else if (buttonEnvironment.isSelected()) {
-            selectedReportType = Constants.ReportType.ENVIRONMENT;
-        } else {
-            selectedReportType = Constants.ReportType.ENVIRONMENT;
-            // TODO: Handle for no selected type
+        RequestBody fbody = null;
+        if (selectedImagePath != null) {
+            File file = new File(selectedImagePath);
+            fbody = RequestBody.create(MediaType.parse("image/*"), file);
         }
-
-        File file = new File(selectedImagePath);
-        RequestBody fbody = RequestBody.create(MediaType.parse("image/*"), file);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(APIConstants.BASE_URL)
+                .addConverterFactory(StringConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+
         PostApiInterface apiInterface = retrofit.create(PostApiInterface.class);
 
         String facebookId = SharedPreferenceHelper.getInstance().getString("facebookId");
 
         // add geolocation
         Call<ResponseBody> createReportCall = apiInterface.createReport(
-                selectedReportType.name(),
+                selectedReportType.name().toString(),
                 facebookId,
                 reportText.getText().toString(),
                 latitude,
