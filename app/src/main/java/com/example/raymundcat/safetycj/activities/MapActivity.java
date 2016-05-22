@@ -434,4 +434,16 @@ public class MapActivity extends Activity implements LocationListener {
     public void onProviderDisabled(String s) {
 
     }
+
+    @Override
+    protected void onPause() {
+
+        try{
+            locationManager.removeUpdates(this);
+        }catch (Exception e){
+
+        }
+
+        super.onPause();
+    }
 }

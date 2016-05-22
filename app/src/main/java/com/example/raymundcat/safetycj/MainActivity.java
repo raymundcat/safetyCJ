@@ -331,5 +331,15 @@ public class MainActivity extends Activity implements LocationListener {
         Log.i("","im clicked");
     }
 
+    @Override
+    protected void onPause() {
 
+        try{
+            locationManager.removeUpdates(this);
+        }catch (Exception e){
+
+        }
+
+        super.onPause();
+    }
 }
