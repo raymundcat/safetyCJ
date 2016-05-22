@@ -22,14 +22,6 @@ import retrofit2.http.Part;
  */
 public interface PostApiInterface {
 
-//    @POST("/api-debug/user-exists/{userID}")
-//    Call<User> listRepos(@Path("user") String user);
-//    public void getFeed(@Path("userID") String userID, Callback response);    // For get
-//    Call<ResponseBody> listRepos(@Path("userID") String user);
-
-//    @GET("api-debug/locations")
-//    Call<ResponseBody> getLocations();
-
     @GET("api-debug/locations")
     Call<EventLocations> getLocations();
 
@@ -52,13 +44,5 @@ public interface PostApiInterface {
             @Part("lng") double lng,
             @Part("timestamp") long timestamp,
             @Part("media\"; filename=\"thumbnailImageFile.jpg\"") RequestBody media
-//            @Part("media") RequestBody media
     );
-//    @Headers({ "Content-Type: multipart/form-data"})
-//    Call<ResponseBody> createUser(@Body User user);
-//    Call<ResponseBody> createUser(
-//            @Body String name,
-//            @Body String facebookId,
-//            @Body String birthday
-//            )
 }
