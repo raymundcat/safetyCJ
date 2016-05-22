@@ -1,10 +1,8 @@
 package com.example.raymundcat.safetycj;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.location.Location;
@@ -21,7 +19,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.raymundcat.safetycj.activities.MapActivity_;
 import com.example.raymundcat.safetycj.fragments.MapFragment;
@@ -213,7 +210,6 @@ public class MainActivity extends Activity implements LocationListener {
         }
         else {
             selectedReportType = Constants.ReportType.ENVIRONMENT;
-            // TODO: Handle for no selected type
         }
 
         return selectedReportType;
